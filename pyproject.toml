@@ -1,0 +1,16 @@
+[project]
+name = "sql-intern-test"
+version = "0.1.0"
+description = "Тестовое задание: SQL-задачи и автотест подключения к PostgreSQL"
+requires-python = ">=3.11"
+dependencies = [
+    "psycopg[binary]>=3.2",
+    "pytest>=8.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

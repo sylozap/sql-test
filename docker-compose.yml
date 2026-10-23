@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: sql-intern-pg
+    environment:
+      POSTGRES_DB: ${DB_NAME:-bank}
+      POSTGRES_USER: ${DB_USER:-intern}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-intern_pass}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./sql/02_seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  pgdata:
